@@ -27,6 +27,8 @@ class Project extends Model
         'potential_volume',
         'comments',
         'next_steps',
+        'created_at',
+        'estado',
     ];
 
     public function documents()

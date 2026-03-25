@@ -19,6 +19,10 @@ return new class extends Migration {
             $table->json('old_values')->nullable();
             $table->json('new_values')->nullable();
 
+            $table->tinyInteger('estado')
+                ->default(2)
+                ->comment('0=Eliminado, 1=Inactivo, 2=Activo');
+
             $table->timestamps();
         });
     }

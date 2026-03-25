@@ -15,6 +15,10 @@ return new class extends Migration {
             $table->string('file_path');
             $table->integer('version');
 
+            $table->tinyInteger('estado')
+                ->default(2)
+                ->comment('0=Eliminado, 1=Inactivo, 2=Activo');
+
             $table->timestamps();
         });
     }

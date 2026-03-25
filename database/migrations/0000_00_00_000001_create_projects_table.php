@@ -39,6 +39,10 @@ return new class extends Migration {
             $table->text('comments')->nullable();
             $table->text('next_steps')->nullable();
 
+            $table->tinyInteger('estado')
+                ->default(2)
+                ->comment('0=Eliminado, 1=Inactivo, 2=Activo');
+
             $table->timestamps();
         });
     }
