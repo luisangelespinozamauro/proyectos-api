@@ -14,6 +14,8 @@ class UserSeeder extends Seeder
             'role_id' => 1,
             'collaborator_number' => '12345',
             'name' => 'Admin',
+            'last_name' => 'Admin',
+            'phone' => '1234567890',
             'email' => 'admin@test.com',
             'password' => Hash::make('password'),
         ]);

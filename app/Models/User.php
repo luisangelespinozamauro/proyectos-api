@@ -15,6 +15,8 @@ class User extends Authenticatable
         'role_id',
         'collaborator_number',
         'name',
+        'last_name',
+        'phone',
         'email',
         'password',
     ];

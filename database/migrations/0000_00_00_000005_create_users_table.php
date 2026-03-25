@@ -13,6 +13,8 @@ return new class extends Migration
             $table->foreignId('role_id')->nullable()->constrained();
             $table->string('collaborator_number');
             $table->string('name');
+            $table->string('last_name');
+            $table->string('phone')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->tinyInteger('estado')

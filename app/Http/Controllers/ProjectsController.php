@@ -56,6 +56,7 @@ class ProjectsController extends Controller
     public function show($id)
     {
         $project = Project::select(
+            'id',
             'nr',
             'brand',
             'model',
@@ -76,6 +77,7 @@ class ProjectsController extends Controller
             'potential_volume',
             'comments',
             'next_steps',
+            'created_at',
             'estado',
         )
             ->where('id', $id)
