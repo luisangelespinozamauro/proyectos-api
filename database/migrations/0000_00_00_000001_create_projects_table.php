@@ -10,13 +10,13 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('nr')->nullable();
+            $table->string('nr')->nullable();
 
             $table->string('brand')->nullable();
             $table->string('model')->nullable();
             $table->string('product_family')->nullable();
 
-            $table->integer('estimated_volume')->nullable();
+            $table->string('estimated_volume')->nullable();
             $table->string('questionnaire_completion')->nullable();
 
             $table->string('nda_status')->nullable();
@@ -33,11 +33,11 @@ return new class extends Migration {
             $table->string('assembly_line')->nullable();
             $table->string('layout')->nullable();
 
-            $table->integer('production_2026')->nullable();
-            $table->integer('potential_volume')->nullable();
+            $table->string('production_2026')->nullable();
+            $table->string('potential_volume')->nullable();
 
-            $table->text('comments')->nullable();
-            $table->text('next_steps')->nullable();
+            $table->string('comments')->nullable();
+            $table->string('next_steps')->nullable();
 
             $table->tinyInteger('estado')
                 ->default(2)

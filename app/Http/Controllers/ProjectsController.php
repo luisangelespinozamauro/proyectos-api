@@ -117,34 +117,33 @@ class ProjectsController extends Controller
     private function validateProject(Request $request, $id = null)
     {
         return $request->validate([
-            'nr' => 'nullable|integer',
-
-            'brand' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'product_family' => 'nullable|string|max:255',
-
-            'estimated_volume' => 'nullable|integer',
-            'questionnaire_completion' => 'nullable|string|max:255',
-
-            'nda_status' => 'nullable|string|max:100',
-
-            'mou_status' => 'nullable|string|max:100',
-            'tca_status' => 'nullable|string|max:100',
-            'contract_status' => 'nullable|string|max:100',
-            'bom_status' => 'nullable|string|max:100',
-
-            'price_agreement' => 'nullable|string|max:255',
-            'project_status' => 'nullable|string|max:100',
-
-            'assembly_approach' => 'nullable|string|max:100',
-            'assembly_line' => 'nullable|string|max:100',
-            'layout' => 'nullable|string|max:100',
-
-            'production_2026' => 'nullable|integer',
-            'potential_volume' => 'nullable|integer',
-
-            'comments' => 'nullable|string',
-            'next_steps' => 'nullable|string',
+            'nr' => 'required',
+            'brand' => 'required',
+            'model' => 'required',
+            'product_family' => 'nullable',
+            'estimated_volume' => 'required',
+            'questionnaire_completion' => 'nullable',
+            'nda_status' => 'required',
+            'mou_status' => 'nullable',
+            'tca_status' => 'nullable',
+            'contract_status' => 'nullable',
+            'bom_status' => 'nullable',
+            'price_agreement' => 'nullable',
+            'project_status' => 'required',
+            'assembly_approach' => 'nullable',
+            'assembly_line' => 'nullable',
+            'layout' => 'nullable',
+            'production_2026' => 'nullable',
+            'potential_volume' => 'nullable',
+            'comments' => 'nullable',
+            'next_steps' => 'nullable',
+        ], [
+            'nr.required' => 'El número de proyecto es requerido',
+            'brand.required' => 'La marca es requerida',
+            'model.required' => 'El modelo es requerido',
+            'estimated_volume.required' => 'El volumen estimado es requerido',
+            'nda_status.required' => 'El estado del NDA es requerido',
+            'project_status.required' => 'El estado del proyecto es requerido',
         ]);
     }
 }
