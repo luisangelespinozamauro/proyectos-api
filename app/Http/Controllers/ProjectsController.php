@@ -117,19 +117,19 @@ class ProjectsController extends Controller
     private function validateProject(Request $request, $id = null)
     {
         return $request->validate([
-            'nr' => 'required',
+            'nr' => 'nullable',
             'brand' => 'required',
-            'model' => 'required',
+            'model' => 'nullable',
             'product_family' => 'nullable',
-            'estimated_volume' => 'required',
+            'estimated_volume' => 'nullable',
             'questionnaire_completion' => 'nullable',
-            'nda_status' => 'required',
+            'nda_status' => 'nullable',
             'mou_status' => 'nullable',
             'tca_status' => 'nullable',
             'contract_status' => 'nullable',
             'bom_status' => 'nullable',
             'price_agreement' => 'nullable',
-            'project_status' => 'required',
+            'project_status' => 'nullable',
             'assembly_approach' => 'nullable',
             'assembly_line' => 'nullable',
             'layout' => 'nullable',
@@ -138,12 +138,7 @@ class ProjectsController extends Controller
             'comments' => 'nullable',
             'next_steps' => 'nullable',
         ], [
-            'nr.required' => 'El número de proyecto es requerido',
             'brand.required' => 'La marca es requerida',
-            'model.required' => 'El modelo es requerido',
-            'estimated_volume.required' => 'El volumen estimado es requerido',
-            'nda_status.required' => 'El estado del NDA es requerido',
-            'project_status.required' => 'El estado del proyecto es requerido',
         ]);
     }
 }
