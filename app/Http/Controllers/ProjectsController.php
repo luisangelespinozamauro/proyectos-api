@@ -35,7 +35,7 @@ class ProjectsController extends Controller
             'estado',
         )
             ->where('estado', '!=', 0)
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->get();
 
         return response()->json($projects, 200);
