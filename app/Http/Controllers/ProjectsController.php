@@ -12,31 +12,31 @@ class ProjectsController extends Controller
         $projects = Project::with([
             'documents.versions'
         ])
-        ->select(
-            'id',
-            'nr',
-            'brand',
-            'model',
-            'product_family',
-            'estimated_volume',
-            'questionnaire_completion',
-            'nda_status',
-            'mou_status',
-            'tca_status',
-            'contract_status',
-            'bom_status',
-            'price_agreement',
-            'project_status',
-            'assembly_approach',
-            'assembly_line',
-            'layout',
-            'production_2026',
-            'potential_volume',
-            'comments',
-            'next_steps',
-            'created_at',
-            'estado',
-        )
+            ->select(
+                'id',
+                'nr',
+                'brand',
+                'model',
+                'product_family',
+                'estimated_volume',
+                'questionnaire_completion',
+                'nda_status',
+                'mou_status',
+                'tca_status',
+                'contract_status',
+                'bom_status',
+                'price_agreement',
+                'project_status',
+                'assembly_approach',
+                'assembly_line',
+                'layout',
+                'production_2026',
+                'potential_volume',
+                'comments',
+                'next_steps',
+                'created_at',
+                'estado',
+            )
             ->where('estado', '!=', 0)
             ->orderBy('id', 'asc')
             ->get();
@@ -58,31 +58,34 @@ class ProjectsController extends Controller
 
     public function show($id)
     {
-        $project = Project::select(
-            'id',
-            'nr',
-            'brand',
-            'model',
-            'product_family',
-            'estimated_volume',
-            'questionnaire_completion',
-            'nda_status',
-            'mou_status',
-            'tca_status',
-            'contract_status',
-            'bom_status',
-            'price_agreement',
-            'project_status',
-            'assembly_approach',
-            'assembly_line',
-            'layout',
-            'production_2026',
-            'potential_volume',
-            'comments',
-            'next_steps',
-            'created_at',
-            'estado',
-        )
+        $project = Project::with([
+            'documents.versions'
+        ])
+            ->select(
+                'id',
+                'nr',
+                'brand',
+                'model',
+                'product_family',
+                'estimated_volume',
+                'questionnaire_completion',
+                'nda_status',
+                'mou_status',
+                'tca_status',
+                'contract_status',
+                'bom_status',
+                'price_agreement',
+                'project_status',
+                'assembly_approach',
+                'assembly_line',
+                'layout',
+                'production_2026',
+                'potential_volume',
+                'comments',
+                'next_steps',
+                'created_at',
+                'estado',
+            )
             ->where('id', $id)
             ->where('estado', '!=', 0)
             ->firstOrFail();
