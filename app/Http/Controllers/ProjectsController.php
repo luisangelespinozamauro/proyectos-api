@@ -9,7 +9,10 @@ class ProjectsController extends Controller
 {
     public function index()
     {
-        $projects = Project::select(
+        $projects = Project::with([
+            'documents.versions'
+        ])
+        ->select(
             'id',
             'nr',
             'brand',
