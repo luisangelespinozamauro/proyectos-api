@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
+use App\Models\DocumentVersion;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectsController extends Controller
 {
@@ -44,16 +48,73 @@ class ProjectsController extends Controller
         return response()->json($projects, 200);
     }
 
+    public function productFamilies()
+    {
+        $families = Project::select('product_family')
+            ->where('estado', '!=', 0)
+            ->whereNotNull('product_family')
+            ->distinct()
+            ->orderBy('product_family', 'asc')
+            ->pluck('product_family');
+
+        return response()->json($families, 200);
+    }
+
     public function store(Request $request)
     {
-        $validated = $this->validateProject($request);
+        DB::beginTransaction();
 
-        $project = Project::create($validated);
+        try {
+            $validated = $this->validateProject($request);
 
-        return response()->json([
-            'message' => 'Proyecto creado correctamente',
-            'data'    => $project
-        ], 201);
+            $project = Project::create($validated);
+
+            $allowedTypes = ['NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
+
+            foreach ($request->documents as $type => $file) {
+
+                $type = strtoupper($type);
+
+                if (!in_array($type, $allowedTypes)) {
+                    continue;
+                }
+
+                if (!$file) continue;
+
+                // guardar archivo
+                $path = $file->store("documents/", 'public');
+
+                // crear documento
+                $document = Document::create([
+                    'project_id' => $project->id,
+                    'type' => $type,
+                    'name' => $file->getClientOriginalName(),
+                    'current_version' => 1,
+                ]);
+
+                // crear versión
+                DocumentVersion::create([
+                    'document_id' => $document->id,
+                    'file_path' => $path,
+                    'version' => 1,
+                ]);
+            }
+
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Proyecto creado correctamente',
+                'data' => $project->load('documents.versions')
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Error al crear proyecto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show($id)
@@ -95,16 +156,85 @@ class ProjectsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $project = Project::findOrFail($id);
+        DB::beginTransaction();
 
-        $validated = $this->validateProject($request, $id);
+        try {
+            $project = Project::findOrFail($id);
 
-        $project->update($validated);
+            $validated = $this->validateProject($request, $id);
 
-        return response()->json([
-            'message' => 'Proyecto actualizado correctamente',
-            'data'    => $project
-        ]);
+            $project->update($validated);
+
+            $allowedTypes = ['NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
+
+            if ($request->has('documents')) {
+
+                foreach ($request->documents as $type => $file) {
+
+                    $type = strtoupper($type);
+
+                    if (!in_array($type, $allowedTypes)) {
+                        continue;
+                    }
+
+                    if (!$file) continue;
+
+                    // buscar documento existente
+                    $document = Document::where('project_id', $project->id)
+                        ->where('type', $type)
+                        ->first();
+
+                    // guardar archivo SIEMPRE (nunca reemplaza)
+                    $path = $file->store("documents/{$project->id}", 'public');
+
+                    if ($document) {
+
+                        // 🔥 ya existe → nueva versión
+                        $newVersion = $document->current_version + 1;
+
+                        DocumentVersion::create([
+                            'document_id' => $document->id,
+                            'file_path' => $path,
+                            'version' => $newVersion,
+                        ]);
+
+                        $document->update([
+                            'current_version' => $newVersion,
+                            'name' => $file->getClientOriginalName()
+                        ]);
+                    } else {
+
+                        // 🆕 no existe → crear documento
+                        $document = Document::create([
+                            'project_id' => $project->id,
+                            'type' => $type,
+                            'name' => $file->getClientOriginalName(),
+                            'current_version' => 1,
+                        ]);
+
+                        DocumentVersion::create([
+                            'document_id' => $document->id,
+                            'file_path' => $path,
+                            'version' => 1,
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Proyecto actualizado correctamente',
+                'data' => $project->load('documents.versions')
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Error al actualizar proyecto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy($id)
@@ -123,6 +253,8 @@ class ProjectsController extends Controller
     private function validateProject(Request $request, $id = null)
     {
         return $request->validate([
+            'documents' => 'nullable|array',
+            'documents.*' => 'file|mimes:pdf,doc,docx,xlsx,ppt,pptx,jpg,jpeg,png,svg',
             'nr' => 'nullable',
             'brand' => 'required',
             'model' => 'nullable',
