@@ -69,7 +69,7 @@ class ProjectsController extends Controller
 
             $project = Project::create($validated);
 
-            $allowedTypes = ['NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
+            $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
 
             foreach ($request->documents as $type => $file) {
 
@@ -81,10 +81,8 @@ class ProjectsController extends Controller
 
                 if (!$file) continue;
 
-                // guardar archivo
                 $path = $file->store("documents/", 'public');
 
-                // crear documento
                 $document = Document::create([
                     'project_id' => $project->id,
                     'type' => $type,
@@ -92,14 +90,12 @@ class ProjectsController extends Controller
                     'current_version' => 1,
                 ]);
 
-                // crear versión
                 DocumentVersion::create([
                     'document_id' => $document->id,
                     'file_path' => $path,
                     'version' => 1,
                 ]);
             }
-
 
             DB::commit();
 
@@ -165,7 +161,7 @@ class ProjectsController extends Controller
 
             $project->update($validated);
 
-            $allowedTypes = ['NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
+            $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
 
             if ($request->has('documents')) {
 
@@ -179,17 +175,14 @@ class ProjectsController extends Controller
 
                     if (!$file) continue;
 
-                    // buscar documento existente
                     $document = Document::where('project_id', $project->id)
                         ->where('type', $type)
                         ->first();
 
-                    // guardar archivo SIEMPRE (nunca reemplaza)
                     $path = $file->store("documents/{$project->id}", 'public');
 
                     if ($document) {
 
-                        // 🔥 ya existe → nueva versión
                         $newVersion = $document->current_version + 1;
 
                         DocumentVersion::create([
@@ -204,7 +197,6 @@ class ProjectsController extends Controller
                         ]);
                     } else {
 
-                        // 🆕 no existe → crear documento
                         $document = Document::create([
                             'project_id' => $project->id,
                             'type' => $type,
@@ -254,7 +246,7 @@ class ProjectsController extends Controller
     {
         return $request->validate([
             'documents' => 'nullable|array',
-            'documents.*' => 'file|mimes:pdf,doc,docx,xlsx,ppt,pptx,jpg,jpeg,png,svg',
+            'documents.*' => 'file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,svg',
             'nr' => 'nullable',
             'brand' => 'required',
             'model' => 'nullable',

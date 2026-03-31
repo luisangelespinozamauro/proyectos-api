@@ -12,7 +12,7 @@ return new class extends Migration {
 
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
 
-            $table->enum('type', ['NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT']);
+            $table->enum('type', ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT']);
 
             $table->string('name')->nullable(); // nombre lógico
             $table->integer('current_version')->default(1);
