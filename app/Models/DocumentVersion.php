@@ -12,6 +12,10 @@ class DocumentVersion extends Model
         'version'
     ];
 
+    protected $hidden = [
+        'updated_at',
+    ];
+
     public function document()
     {
         return $this->belongsTo(Document::class);

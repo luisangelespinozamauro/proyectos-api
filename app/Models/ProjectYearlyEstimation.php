@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Document extends Model
+class ProjectYearlyEstimation extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'project_id',
-        'type',
-        'name',
-        'current_version'
+        'year',
+        'amount',
+        'estado',
     ];
 
     protected $hidden = [
@@ -21,10 +24,5 @@ class Document extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
-    }
-
-    public function versions()
-    {
-        return $this->hasMany(DocumentVersion::class);
     }
 }

@@ -36,4 +36,9 @@ class Project extends Model
     {
         return $this->hasMany(Document::class);
     }
+
+    public function yearlyEstimations()
+    {
+        return $this->hasMany(ProjectYearlyEstimation::class);
+    }
 }

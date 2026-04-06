@@ -14,7 +14,9 @@ class ProjectsController extends Controller
     public function index()
     {
         $projects = Project::with([
-            'documents.versions'
+            'documents.versions',
+            'yearlyEstimations'
+
         ])
             ->select(
                 'id',
@@ -70,32 +72,44 @@ class ProjectsController extends Controller
 
             $project = Project::create($validated);
 
+            if ($request->filled('yearly_estimations')) {
+                foreach ($request->yearly_estimations as $item) {
+                    $project->yearlyEstimations()->create([
+                        'year' => $item['year'],
+                        'amount' => $item['amount'],
+                    ]);
+                }
+            }
+
             $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
 
-            foreach ($request->documents as $type => $file) {
+            if ($request->has('documents')) {
 
-                $type = strtoupper($type);
+                foreach ($request->file('documents') as $type => $file) {
 
-                if (!in_array($type, $allowedTypes)) {
-                    continue;
+                    $type = strtoupper($type);
+
+                    if (!in_array($type, $allowedTypes)) {
+                        continue;
+                    }
+
+                    if (!$file) continue;
+
+                    $path = $file->store("documents/", 'public');
+
+                    $document = Document::create([
+                        'project_id' => $project->id,
+                        'type' => $type,
+                        'name' => $file->getClientOriginalName(),
+                        'current_version' => 1,
+                    ]);
+
+                    DocumentVersion::create([
+                        'document_id' => $document->id,
+                        'file_path' => $path,
+                        'version' => 1,
+                    ]);
                 }
-
-                if (!$file) continue;
-
-                $path = $file->store("documents/", 'public');
-
-                $document = Document::create([
-                    'project_id' => $project->id,
-                    'type' => $type,
-                    'name' => $file->getClientOriginalName(),
-                    'current_version' => 1,
-                ]);
-
-                DocumentVersion::create([
-                    'document_id' => $document->id,
-                    'file_path' => $path,
-                    'version' => 1,
-                ]);
             }
 
             DB::commit();
@@ -117,7 +131,8 @@ class ProjectsController extends Controller
     public function show($id)
     {
         $project = Project::with([
-            'documents.versions'
+            'documents.versions',
+            'yearlyEstimations'
         ])
             ->select(
                 'id',
@@ -162,6 +177,16 @@ class ProjectsController extends Controller
             $validated = $this->validateProject($request, $id);
 
             $project->update($validated);
+
+            if ($request->filled('yearly_estimations')) {
+                $project->yearlyEstimations()->delete();
+                foreach ($request->yearly_estimations as $item) {
+                    $project->yearlyEstimations()->create([
+                        'year' => $item['year'],
+                        'amount' => $item['amount'],
+                    ]);
+                }
+            }
 
             $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
 
@@ -270,8 +295,20 @@ class ProjectsController extends Controller
             'due_diligence' => 'nullable',
             'comments' => 'nullable',
             'next_steps' => 'nullable',
+
+            'yearly_estimations' => 'nullable|array',
+            'yearly_estimations.*.year' => 'required|integer',
+            'yearly_estimations.*.amount' => 'required|numeric',
         ], [
             'brand.required' => 'La marca es requerida',
+            'documents.*.file' => 'Cada documento debe ser un archivo válido',
+            'documents.*.mimes' => 'Cada documento debe ser un archivo de tipo pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, svg',
+            'yearly_estimations.*.year.required' => 'El año es requerido para cada estimación anual',
+            'yearly_estimations.*.year.integer' => 'El año debe ser un número entero para cada estimación anual',
+            'yearly_estimations.*.amount.required' => 'El monto es requerido para cada estimación anual',
+            'yearly_estimations.*.amount.numeric' => 'El monto debe ser un número para cada estimación anual',
+            'yearly_estimations.*.year.unique' => 'Ya existe una estimación anual para el año ingresado',
+
         ]);
     }
 }
