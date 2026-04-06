@@ -35,6 +35,7 @@ return new class extends Migration {
 
             $table->string('production_2026')->nullable();
             $table->string('potential_volume')->nullable();
+            $table->string('due_diligence')->nullable();
 
             $table->string('comments')->nullable();
             $table->string('next_steps')->nullable();

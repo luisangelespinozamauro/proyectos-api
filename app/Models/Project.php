@@ -25,6 +25,7 @@ class Project extends Model
         'layout',
         'production_2026',
         'potential_volume',
+        'due_diligence',
         'comments',
         'next_steps',
         'created_at',

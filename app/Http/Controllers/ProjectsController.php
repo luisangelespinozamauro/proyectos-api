@@ -36,6 +36,7 @@ class ProjectsController extends Controller
                 'layout',
                 'production_2026',
                 'potential_volume',
+                'due_diligence',
                 'comments',
                 'next_steps',
                 'created_at',
@@ -138,6 +139,7 @@ class ProjectsController extends Controller
                 'layout',
                 'production_2026',
                 'potential_volume',
+                'due_diligence',
                 'comments',
                 'next_steps',
                 'created_at',
@@ -165,7 +167,7 @@ class ProjectsController extends Controller
 
             if ($request->has('documents')) {
 
-                foreach ($request->documents as $type => $file) {
+                foreach ($request->file('documents') as $type => $file) {
 
                     $type = strtoupper($type);
 
@@ -265,6 +267,7 @@ class ProjectsController extends Controller
             'layout' => 'nullable',
             'production_2026' => 'nullable',
             'potential_volume' => 'nullable',
+            'due_diligence' => 'nullable',
             'comments' => 'nullable',
             'next_steps' => 'nullable',
         ], [
