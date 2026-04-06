@@ -181,7 +181,7 @@ class ProjectsController extends Controller
                         ->where('type', $type)
                         ->first();
 
-                    $path = $file->store("documents/{$project->id}", 'public');
+                    $path = $file->store("documents/", 'public');
 
                     if ($document) {
 
