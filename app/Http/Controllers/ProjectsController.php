@@ -314,8 +314,8 @@ class ProjectsController extends Controller
             'brand.required' => 'La marca es requerida',
             'documents.*.file' => 'Cada documento debe ser un archivo válido',
             'documents.*.mimes' => 'Cada documento debe ser un archivo de tipo pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, svg',
-            'yearly_estimations.*.year.integer' => 'El año debe ser un número entero para cada estimación anual',
-            'yearly_estimations.*.amount.numeric' => 'El monto debe ser un número para cada estimación anual',
+            //'yearly_estimations.*.year.integer' => 'El año debe ser un número entero para cada estimación anual',
+            //'yearly_estimations.*.amount.numeric' => 'El monto debe ser un número para cada estimación anual',
             'yearly_estimations.*.year.unique' => 'Ya existe una estimación anual para el año ingresado',
 
         ]);
