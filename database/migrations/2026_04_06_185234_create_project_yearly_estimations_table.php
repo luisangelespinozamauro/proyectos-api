@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('project_yearly_estimations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->integer('year');
-            $table->decimal('amount', 15, 2);
+            $table->foreignId('project_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->integer('year')->nullable();
+            $table->decimal('amount', 15, 2)->nullable();
 
             $table->tinyInteger('estado')
                 ->default(2)

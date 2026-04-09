@@ -8,6 +8,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class ProjectsController extends Controller
 {
@@ -118,6 +119,11 @@ class ProjectsController extends Controller
                 'message' => 'Proyecto creado correctamente',
                 'data' => $project->load('documents.versions')
             ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Errores de validación',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -246,6 +252,11 @@ class ProjectsController extends Controller
                 'message' => 'Proyecto actualizado correctamente',
                 'data' => $project->load('documents.versions')
             ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Errores de validación',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             DB::rollBack();
 

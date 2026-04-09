@@ -14,6 +14,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/productFamilies', [ProjectsController::class, 'productFamilies']);
     Route::get('/roles', [UsersController::class, 'roles']);
+    Route::get('/manual/{tipo}', [AuthController::class, 'verManual']);
 
     Route::get('/user', [AuthController::class, 'user']);
 });
