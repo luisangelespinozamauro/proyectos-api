@@ -308,8 +308,8 @@ class ProjectsController extends Controller
             'next_steps' => 'nullable',
 
             'yearly_estimations' => 'nullable|array',
-            'yearly_estimations.*.year' => 'nullable|integer',
-            'yearly_estimations.*.amount' => 'nullable|numeric',
+            'yearly_estimations.*.year' => 'nullable',
+            'yearly_estimations.*.amount' => 'nullable',
         ], [
             'brand.required' => 'La marca es requerida',
             'documents.*.file' => 'Cada documento debe ser un archivo válido',
