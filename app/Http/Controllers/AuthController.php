@@ -49,31 +49,4 @@ class AuthController extends Controller
             ]
         ], 200);
     }
-
-    public function verManual($tipo)
-    {
-        $user = auth()->user();
-
-        if (!$user) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
-
-        $roles = [
-            1 => 'super-admin',
-            2 => 'admin',
-            3 => 'consultor'
-        ];
-
-        if (!isset($roles[$user->role_id]) || $roles[$user->role_id] !== $tipo) {
-            return response()->json(['message' => 'No autorizado'], 403);
-        }
-
-        $path = storage_path("app/manuales/{$tipo}.pdf");
-
-        if (!file_exists($path)) {
-            return response()->json(['message' => 'Archivo no encontrado'], 404);
-        }
-
-        return response()->file($path);
-    }
 }
