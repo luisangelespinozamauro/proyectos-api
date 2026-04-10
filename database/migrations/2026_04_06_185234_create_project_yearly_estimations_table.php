@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('project_yearly_estimations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->integer('year')->nullable();
-            $table->decimal('amount', 15, 2)->nullable();
+            $table->string('year')->nullable();
+            $table->string('amount', 15, 2)->nullable();
 
             $table->tinyInteger('estado')
                 ->default(2)
