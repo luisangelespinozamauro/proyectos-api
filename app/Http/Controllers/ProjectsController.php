@@ -16,11 +16,12 @@ class ProjectsController extends Controller
     {
         $projects = Project::with([
             'documents.versions',
-            'yearlyEstimations'
-
+            'yearlyEstimations',
+            'brand:id,name',
         ])
             ->select(
                 'id',
+                'brand_id',
                 'nr',
                 'brand',
                 'model',
@@ -138,10 +139,12 @@ class ProjectsController extends Controller
     {
         $project = Project::with([
             'documents.versions',
-            'yearlyEstimations'
+            'yearlyEstimations',
+            'brand:id,name',
         ])
             ->select(
                 'id',
+                'brand_id',
                 'nr',
                 'brand',
                 'model',
@@ -285,6 +288,7 @@ class ProjectsController extends Controller
         return $request->validate([
             'documents' => 'nullable|array',
             'documents.*' => 'file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,svg',
+            'brand_id' => 'required|exists:brands,id',
             'nr' => 'nullable',
             'brand' => 'required',
             'model' => 'nullable',
@@ -311,6 +315,8 @@ class ProjectsController extends Controller
             'yearly_estimations.*.year' => 'nullable',
             'yearly_estimations.*.amount' => 'nullable',
         ], [
+            'brand_id.required' => 'La marca es requerida',
+            'brand_id.exists' => 'La marca seleccionada no es válida',
             'brand.required' => 'La marca es requerida',
             'documents.*.file' => 'Cada documento debe ser un archivo válido',
             'documents.*.mimes' => 'Cada documento debe ser un archivo de tipo pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, svg',

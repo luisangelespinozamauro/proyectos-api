@@ -4,16 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Brand extends Model
 {
     protected $fillable = [
         'name',
-        'estado'
+        'estado',
+        'created_at'
     ];
-
 
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 }

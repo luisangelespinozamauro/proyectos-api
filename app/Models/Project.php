@@ -8,6 +8,7 @@ class Project extends Model
 {
     protected $fillable = [
         'nr',
+        'brand_id',
         'brand',
         'model',
         'product_family',
@@ -40,5 +41,10 @@ class Project extends Model
     public function yearlyEstimations()
     {
         return $this->hasMany(ProjectYearlyEstimation::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 }

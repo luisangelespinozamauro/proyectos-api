@@ -2,34 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    public function roles()
-    {
-        $roles = Role::all();
-
-        return response()->json($roles, 200);
-    }
-    
     public function index()
     {
-        $users = User::select(
-            'id',
-            'role_id',
-            'collaborator_number',
-            'name',
-            'last_name',
-            'phone',
-            'email',
-            'password',
-            'estado',
-            'created_at',
-        )
+        $users = User::with([
+            'brand:id,name'
+        ])
+            ->select(
+                'id',
+                'role_id',
+                'brand_id',
+                'collaborator_number',
+                'name',
+                'last_name',
+                'phone',
+                'email',
+                'password',
+                'estado',
+                'created_at',
+            )
             ->where('estado', '!=', 0)
             ->orderBy('id', 'desc')
             ->get();
@@ -56,6 +53,7 @@ class UsersController extends Controller
         $user = User::select(
             'id',
             'role_id',
+            'brand_id',
             'collaborator_number',
             'name',
             'last_name',
@@ -110,6 +108,7 @@ class UsersController extends Controller
         return $request->validate(
             [
                 'role_id' => 'required|exists:roles,id',
+                'brand_id' => 'nullable|exists:brands,id',
                 'collaborator_number' => 'required|unique:users,collaborator_number,' . $id,
                 'name' => 'required|max:255',
                 'last_name' => 'required|max:255',
@@ -119,7 +118,9 @@ class UsersController extends Controller
             [
                 'role_id.required' => 'El rol es requerido',
                 'role_id.exists' => 'El rol no existe',
-                'collaborator_number.required' => 'El número de colaborador es requerido',
+                'brand_id.required' => 'La marca es requerida',
+                'brand_id.exists' => 'La marca no existe',
+                'collaborator_number.required' => 'El número de colaborador es requerido',
                 'collaborator_number.unique' => 'El número de colaborador ya existe',
                 'name.required' => 'El nombre es requerido',
                 'last_name.required' => 'El apellido es requerido',

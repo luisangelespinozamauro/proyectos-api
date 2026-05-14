@@ -9,9 +9,10 @@ return new class extends Migration {
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('brand_id')->nullable()->constrained('brands');
 
             $table->string('nr')->nullable();
-
+            
             $table->string('brand')->nullable();
             $table->string('model')->nullable();
             $table->string('product_family')->nullable();
