@@ -18,6 +18,7 @@ class ProjectsController extends Controller
             'documents.versions',
             'yearlyEstimations',
             'brand:id,name',
+            'brand.users:id,name',
         ])
             ->select(
                 'id',
@@ -270,19 +271,6 @@ class ProjectsController extends Controller
         }
     }
 
-    public function destroy($id)
-    {
-        $project = Project::where('id', $id)
-            ->where('estado', '!=', 0)
-            ->firstOrFail();
-
-        $project->update(['estado' => 0]);
-
-        return response()->json([
-            'message' => 'Proyecto eliminado correctamente'
-        ], 200);
-    }
-
     private function validateProject(Request $request, $id = null)
     {
         return $request->validate([
@@ -314,6 +302,9 @@ class ProjectsController extends Controller
             'yearly_estimations' => 'nullable|array',
             'yearly_estimations.*.year' => 'nullable',
             'yearly_estimations.*.amount' => 'nullable',
+
+            'estado' => 'sometimes|in:1,2',
+
         ], [
             'brand_id.required' => 'La marca es requerida',
             'brand_id.exists' => 'La marca seleccionada no es válida',
@@ -323,7 +314,7 @@ class ProjectsController extends Controller
             //'yearly_estimations.*.year.integer' => 'El año debe ser un número entero para cada estimación anual',
             //'yearly_estimations.*.amount.numeric' => 'El monto debe ser un número para cada estimación anual',
             'yearly_estimations.*.year.unique' => 'Ya existe una estimación anual para el año ingresado',
-
+            'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
         ]);
     }
 }

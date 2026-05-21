@@ -14,7 +14,10 @@ class Brand extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(
+            User::class,
+            'brand_users'
+        );
     }
 
     public function projects()

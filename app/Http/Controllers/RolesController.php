@@ -65,19 +65,6 @@ class RolesController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
-    {
-        $role = Role::where('id', $id)
-            ->where('estado', '!=', 0)
-            ->firstOrFail();
-
-        $role->update(['estado' => 0]);
-
-        return response()->json([
-            'message' => 'Rol eliminado correctamente'
-        ], 200);
-    }
-
     public function validateRoles(Request $request, $id = null)
     {
         return $request->validate(

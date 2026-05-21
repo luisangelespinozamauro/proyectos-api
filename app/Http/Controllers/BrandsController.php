@@ -69,22 +69,6 @@ class BrandsController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
-    {
-        $brand = Brand::where('id', $id)
-            ->where('estado', '!=', 0)
-            ->firstOrFail();
-
-        // Soft delete manual
-        $brand->update([
-            'estado' => 0
-        ]);
-
-        return response()->json([
-            'message' => 'Marca eliminada correctamente'
-        ], 200);
-    }
-
     private function validateBrand(Request $request, $id = null)
     {
         return $request->validate(

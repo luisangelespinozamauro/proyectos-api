@@ -67,19 +67,6 @@ class PermissionsController extends Controller
         ], 200);
     }
 
-    public function destroy($id)
-    {
-        $permission = Permission::where('id', $id)
-            ->where('estado', '!=', 0)
-            ->firstOrFail();
-
-        $permission->update(['estado' => 0]);
-
-        return response()->json([
-            'message' => 'Permiso eliminado correctamente'
-        ], 200);
-    }
-
     public function validatePermissions(Request $request, $id = null)
     {
         return $request->validate(

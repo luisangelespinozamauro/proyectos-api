@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,12 +11,11 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::with([
-            'brand:id,name'
+            'brands:id,name'
         ])
             ->select(
                 'id',
                 'role_id',
-                'brand_id',
                 'collaborator_number',
                 'name',
                 'last_name',
@@ -42,6 +40,11 @@ class UsersController extends Controller
 
         $user = User::create($validated);
 
+        if ($request->filled('brands')) {
+
+            $user->brands()->sync($request->brands);
+        }
+
         return response()->json([
             'message' => 'Usuario creado correctamente',
             'data'    => $user
@@ -50,19 +53,21 @@ class UsersController extends Controller
 
     public function show($id)
     {
-        $user = User::select(
-            'id',
-            'role_id',
-            'brand_id',
-            'collaborator_number',
-            'name',
-            'last_name',
-            'phone',
-            'email',
-            'password',
-            'estado',
-            'created_at',
-        )
+        $user = User::with([
+            'brands:id,name'
+        ])
+            ->select(
+                'id',
+                'role_id',
+                'collaborator_number',
+                'name',
+                'last_name',
+                'phone',
+                'email',
+                'password',
+                'estado',
+                'created_at',
+            )
             ->where('id', $id)
             ->where('estado', '!=', 0)
             ->firstOrFail();
@@ -84,22 +89,13 @@ class UsersController extends Controller
 
         $user->update($validated);
 
+        $user->brands()->sync(
+            $request->brands ?? []
+        );
+
         return response()->json([
             'message' => 'Usuario actualizado correctamente',
             'data'    => $user
-        ], 200);
-    }
-
-    public function destroy($id)
-    {
-        $user = User::where('id', $id)
-            ->where('estado', '!=', 0)
-            ->firstOrFail();
-
-        $user->update(['estado' => 0]);
-
-        return response()->json([
-            'message' => 'Usuario eliminado correctamente'
         ], 200);
     }
 
@@ -107,28 +103,29 @@ class UsersController extends Controller
     {
         return $request->validate(
             [
+                'brands' => 'nullable|array',
+                'brands.*' => 'exists:brands,id',
                 'role_id' => 'required|exists:roles,id',
-                'brand_id' => 'nullable|exists:brands,id',
                 'collaborator_number' => 'required|unique:users,collaborator_number,' . $id,
                 'name' => 'required|max:255',
                 'last_name' => 'required|max:255',
                 'phone' => 'nullable|integer|digits:10',
                 'email' => 'nullable|email|unique:users,email,' . $id,
+                'estado' => 'sometimes|in:1,2',
             ],
             [
+                'brands.*.exists' => 'La marca no existe',
                 'role_id.required' => 'El rol es requerido',
                 'role_id.exists' => 'El rol no existe',
-                'brand_id.required' => 'La marca es requerida',
-                'brand_id.exists' => 'La marca no existe',
                 'collaborator_number.required' => 'El número de colaborador es requerido',
-                'collaborator_number.unique' => 'El número de colaborador ya existe',
+                'collaborator_number.unique' => 'El número de colaborador ya existe',
                 'name.required' => 'El nombre es requerido',
                 'last_name.required' => 'El apellido es requerido',
                 'phone.integer' => 'El teléfono debe ser un número',
                 'phone.digits' => 'El teléfono debe tener 10 dígitos',
                 'email.email' => 'El correo electrónico no es válido',
                 'email.unique' => 'El correo electrónico ya existe',
-
+                'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
             ]
         );
     }

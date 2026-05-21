@@ -13,7 +13,6 @@ class User extends Authenticatable
 
     protected $fillable = [
         'role_id',
-        'brand_id',
         'collaborator_number',
         'name',
         'last_name',
@@ -33,8 +32,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function brand()
+    public function brands()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsToMany(
+            Brand::class,
+            'brand_users'
+        );
     }
 }
