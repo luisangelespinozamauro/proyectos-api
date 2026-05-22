@@ -15,7 +15,6 @@ class AuditLogSeeder extends Seeder
             'table_name' => 'projects',
             'record_id' => 1,
             'new_values' => json_encode([
-                'brand' => 'Toyota',
                 'model' => 'Hilux'
             ])
         ]);

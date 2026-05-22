@@ -9,7 +9,6 @@ class Project extends Model
     protected $fillable = [
         'nr',
         'brand_id',
-        'brand',
         'model',
         'product_family',
         'estimated_volume',

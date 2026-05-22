@@ -12,7 +12,6 @@ class ProjectSeeder extends Seeder
         $projects = [
             [
                 'nr' => 1,
-                'brand' => 'Toyota',
                 'model' => 'Hilux',
                 'product_family' => 'Pickup',
                 'estimated_volume' => 12000,
@@ -34,7 +33,6 @@ class ProjectSeeder extends Seeder
             ],
             [
                 'nr' => 2,
-                'brand' => 'Nissan',
                 'model' => 'Versa',
                 'product_family' => 'Sedan',
                 'estimated_volume' => 20000,
@@ -56,7 +54,6 @@ class ProjectSeeder extends Seeder
             ],
             [
                 'nr' => 3,
-                'brand' => 'Kia',
                 'model' => 'Rio',
                 'product_family' => 'Hatchback',
                 'estimated_volume' => 10000,

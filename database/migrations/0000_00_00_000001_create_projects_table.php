@@ -12,8 +12,7 @@ return new class extends Migration {
             $table->foreignId('brand_id')->nullable()->constrained('brands');
 
             $table->string('nr')->nullable();
-            
-            $table->string('brand')->nullable();
+
             $table->string('model')->nullable();
             $table->string('product_family')->nullable();
 
@@ -27,15 +26,21 @@ return new class extends Migration {
             $table->string('contract_status')->nullable();
             $table->string('bom_status')->nullable();
 
+            //Ya no aparece en el excel
             $table->string('price_agreement')->nullable();
             $table->string('project_status')->nullable();
 
             $table->string('assembly_approach')->nullable();
             $table->string('assembly_line')->nullable();
+
+            //Ya no aparece en el excel
             $table->string('layout')->nullable();
 
+            //Ya no aparece en el excel
             $table->string('production_2026')->nullable();
             $table->string('potential_volume')->nullable();
+
+            //Ya no aparece en el excel
             $table->string('due_diligence')->nullable();
 
             $table->string('comments')->nullable();
