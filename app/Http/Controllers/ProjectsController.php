@@ -17,6 +17,7 @@ class ProjectsController extends Controller
         $projects = Project::with([
             'documents.versions',
             'yearlyEstimations',
+            'monthsComments',
             'brand:id,name',
             'brand.users:id,name',
         ])
@@ -83,6 +84,15 @@ class ProjectsController extends Controller
                 }
             }
 
+            if ($request->filled('months_comments')) {
+                foreach ($request->months_comments as $item) {
+                    $project->monthsComments()->create([
+                        'months' => $item['months'],
+                        'comment' => $item['comment'],
+                    ]);
+                }
+            }
+
             $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
 
             if ($request->has('documents')) {
@@ -140,6 +150,7 @@ class ProjectsController extends Controller
         $project = Project::with([
             'documents.versions',
             'yearlyEstimations',
+            'monthsComments',
             'brand:id,name',
         ])
             ->select(
@@ -192,6 +203,16 @@ class ProjectsController extends Controller
                     $project->yearlyEstimations()->create([
                         'year' => $item['year'],
                         'amount' => $item['amount'],
+                    ]);
+                }
+            }
+
+            if ($request->filled('months_comments')) {
+                $project->monthsComments()->delete();
+                foreach ($request->months_comments as $item) {
+                    $project->monthsComments()->create([
+                        'months' => $item['months'],
+                        'comment' => $item['comment'],
                     ]);
                 }
             }
@@ -300,6 +321,10 @@ class ProjectsController extends Controller
             'yearly_estimations.*.year' => 'nullable',
             'yearly_estimations.*.amount' => 'nullable',
 
+            'months_comments' => 'nullable|array',
+            'months_comments.*.months' => 'nullable',
+            'months_comments.*.comment' => 'nullable',
+
             'estado' => 'sometimes|in:1,2',
 
         ], [
@@ -308,9 +333,8 @@ class ProjectsController extends Controller
             'brand.required' => 'La marca es requerida',
             'documents.*.file' => 'Cada documento debe ser un archivo válido',
             'documents.*.mimes' => 'Cada documento debe ser un archivo de tipo pdf, doc, docx, xls, xlsx, ppt, pptx, jpg, jpeg, png, svg',
-            //'yearly_estimations.*.year.integer' => 'El año debe ser un número entero para cada estimación anual',
-            //'yearly_estimations.*.amount.numeric' => 'El monto debe ser un número para cada estimación anual',
             'yearly_estimations.*.year.unique' => 'Ya existe una estimación anual para el año ingresado',
+            'months_comments.*.months.unique' => 'Ya existe un comentario para el mes ingresado',
             'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
         ]);
     }

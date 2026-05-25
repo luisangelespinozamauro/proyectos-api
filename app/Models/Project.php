@@ -42,6 +42,11 @@ class Project extends Model
         return $this->hasMany(ProjectYearlyEstimation::class);
     }
 
+    public function monthsComments()
+    {
+        return $this->hasMany(ProjectMonthsComment::class);
+    }
+
     public function brand()
     {
         return $this->belongsTo(Brand::class);
