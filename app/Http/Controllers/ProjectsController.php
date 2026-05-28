@@ -213,6 +213,18 @@ class ProjectsController extends Controller
         try {
             $project = Project::findOrFail($id);
 
+            if (is_string($request->yearly_estimations)) {
+                $request->merge([
+                    'yearly_estimations' => json_decode($request->yearly_estimations, true)
+                ]);
+            }
+
+            if (is_string($request->months_comments)) {
+                $request->merge([
+                    'months_comments' => json_decode($request->months_comments, true)
+                ]);
+            }
+
             $validated = $this->validateProject($request, $id);
 
             $project->update($validated);
