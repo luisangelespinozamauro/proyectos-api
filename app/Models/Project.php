@@ -23,13 +23,23 @@ class Project extends Model
         'assembly_approach',
         'assembly_line',
         'layout',
-        'production_2026',
         'potential_volume',
         'due_diligence',
         'comments',
         'next_steps',
         'created_at',
         'estado',
+
+        'main_contact_supervisor',
+        'model_family',
+        'models',
+        'plant_line',
+        'trademark_license_agreement',
+        'homologation_status',
+        'estimated_sop',
+        'project_mgr',
+        'pending_points_legal',
+        'support_requested'
     ];
 
     public function documents()

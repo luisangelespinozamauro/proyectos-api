@@ -13,7 +13,9 @@ return new class extends Migration {
 
             $table->string('nr')->nullable();
 
+            //Ya no aparece en el excel
             $table->string('model')->nullable();
+            //Ya no aparece en el excel
             $table->string('product_family')->nullable();
 
             $table->string('estimated_volume')->nullable();
@@ -35,9 +37,6 @@ return new class extends Migration {
 
             //Ya no aparece en el excel
             $table->string('layout')->nullable();
-
-            //Ya no aparece en el excel
-            $table->string('production_2026')->nullable();
             $table->string('potential_volume')->nullable();
 
             //Ya no aparece en el excel
@@ -51,6 +50,18 @@ return new class extends Migration {
                 ->comment('0=Eliminado, 1=Inactivo, 2=Activo');
 
             $table->timestamps();
+
+            //Nuevos Campos
+            $table->string('main_contact_supervisor')->nullable();
+            $table->string('model_family')->nullable();
+            $table->string('models')->nullable();
+            $table->string('plant_line')->nullable();
+            $table->string('trademark_license_agreement')->nullable();
+            $table->string('homologation_status')->nullable();
+            $table->string('estimated_sop')->nullable();
+            $table->string('project_mgr')->nullable();
+            $table->string('pending_points_legal')->nullable();
+            $table->string('support_requested')->nullable();
         });
     }
 

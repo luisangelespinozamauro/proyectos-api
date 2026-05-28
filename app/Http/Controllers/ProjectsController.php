@@ -39,13 +39,23 @@ class ProjectsController extends Controller
                 'assembly_approach',
                 'assembly_line',
                 'layout',
-                'production_2026',
                 'potential_volume',
                 'due_diligence',
                 'comments',
                 'next_steps',
                 'created_at',
                 'estado',
+
+                'main_contact_supervisor',
+                'model_family',
+                'models',
+                'plant_line',
+                'trademark_license_agreement',
+                'homologation_status',
+                'estimated_sop',
+                'project_mgr',
+                'pending_points_legal',
+                'support_requested'
             )
             ->where('estado', '!=', 0)
             ->orderBy('id', 'asc')
@@ -171,13 +181,23 @@ class ProjectsController extends Controller
                 'assembly_approach',
                 'assembly_line',
                 'layout',
-                'production_2026',
                 'potential_volume',
                 'due_diligence',
                 'comments',
                 'next_steps',
                 'created_at',
                 'estado',
+
+                'main_contact_supervisor',
+                'model_family',
+                'models',
+                'plant_line',
+                'trademark_license_agreement',
+                'homologation_status',
+                'estimated_sop',
+                'project_mgr',
+                'pending_points_legal',
+                'support_requested'
             )
             ->where('id', $id)
             ->where('estado', '!=', 0)
@@ -295,6 +315,7 @@ class ProjectsController extends Controller
         return $request->validate([
             'documents' => 'nullable|array',
             'documents.*' => 'file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,svg',
+
             'brand_id' => 'required|exists:brands,id',
             'nr' => 'nullable',
             'model' => 'nullable',
@@ -311,11 +332,22 @@ class ProjectsController extends Controller
             'assembly_approach' => 'nullable',
             'assembly_line' => 'nullable',
             'layout' => 'nullable',
-            'production_2026' => 'nullable',
             'potential_volume' => 'nullable',
             'due_diligence' => 'nullable',
             'comments' => 'nullable',
             'next_steps' => 'nullable',
+            'estado' => 'sometimes|in:1,2',
+
+            'main_contact_supervisor' => 'nullable',
+            'model_family' => 'nullable',
+            'models' => 'nullable',
+            'plant_line' => 'nullable',
+            'trademark_license_agreement' => 'nullable',
+            'homologation_status' => 'nullable',
+            'estimated_sop' => 'nullable',
+            'project_mgr' => 'nullable',
+            'pending_points_legal' => 'nullable',
+            'support_requested' => 'nullable',
 
             'yearly_estimations' => 'nullable|array',
             'yearly_estimations.*.year' => 'nullable',
@@ -324,9 +356,6 @@ class ProjectsController extends Controller
             'months_comments' => 'nullable|array',
             'months_comments.*.months' => 'nullable',
             'months_comments.*.comment' => 'nullable',
-
-            'estado' => 'sometimes|in:1,2',
-
         ], [
             'brand_id.required' => 'La marca es requerida',
             'brand_id.exists' => 'La marca seleccionada no es válida',
