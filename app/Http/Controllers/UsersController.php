@@ -113,20 +113,20 @@ class UsersController extends Controller
                 'email' => 'nullable|email|unique:users,email,' . $id,
                 'estado' => 'sometimes|in:1,2',
             ],
-            [
-                'brands.*.exists' => 'La marca no existe',
-                'role_id.required' => 'El rol es requerido',
-                'role_id.exists' => 'El rol no existe',
-                'collaborator_number.required' => 'El número de colaborador es requerido',
-                'collaborator_number.unique' => 'El número de colaborador ya existe',
-                'name.required' => 'El nombre es requerido',
-                'last_name.required' => 'El apellido es requerido',
-                'phone.integer' => 'El teléfono debe ser un número',
-                'phone.digits' => 'El teléfono debe tener 10 dígitos',
-                'email.email' => 'El correo electrónico no es válido',
-                'email.unique' => 'El correo electrónico ya existe',
-                'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
-            ]
+            // [
+            //     'brands.*.exists' => 'La marca no existe',
+            //     'role_id.required' => 'El rol es requerido',
+            //     'role_id.exists' => 'El rol no existe',
+            //     'collaborator_number.required' => 'El número de colaborador es requerido',
+            //     'collaborator_number.unique' => 'El número de colaborador ya existe',
+            //     'name.required' => 'El nombre es requerido',
+            //     'last_name.required' => 'El apellido es requerido',
+            //     'phone.integer' => 'El teléfono debe ser un número',
+            //     'phone.digits' => 'El teléfono debe tener 10 dígitos',
+            //     'email.email' => 'El correo electrónico no es válido',
+            //     'email.unique' => 'El correo electrónico ya existe',
+            //     'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
+            // ]
         );
     }
 }

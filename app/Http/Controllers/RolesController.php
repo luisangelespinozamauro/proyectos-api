@@ -72,12 +72,12 @@ class RolesController extends Controller
                 'name' => 'required|string|max:255|unique:roles,name,' . $id,
                 'estado' => 'nullable|in:0,1,2',
             ],
-            [
-                'name.required' => 'El nombre es obligatorio',
-                'name.max'      => 'El nombre no puede tener más de 255 caracteres',
-                'name.unique'   => 'El nombre ya existe',
-                'estado.in'     => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
-            ]
+            // [
+            //     'name.required' => 'El nombre es obligatorio',
+            //     'name.max'      => 'El nombre no puede tener más de 255 caracteres',
+            //     'name.unique'   => 'El nombre ya existe',
+            //     'estado.in'     => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
+            // ]
         );
     }
 }

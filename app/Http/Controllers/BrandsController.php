@@ -87,14 +87,14 @@ class BrandsController extends Controller
                 // En update sí puede modificarse
                 'estado' => 'sometimes|in:1,2',
             ],
-            [
-                'name.required' => 'El nombre es obligatorio.',
-                'name.string'   => 'El nombre debe ser una cadena de texto.',
-                'name.max'      => 'El nombre no debe exceder los 255 caracteres.',
-                'name.unique'   => 'El nombre ya existe. Por favor, elige otro.',
+            // [
+            //     'name.required' => 'El nombre es obligatorio.',
+            //     'name.string'   => 'El nombre debe ser una cadena de texto.',
+            //     'name.max'      => 'El nombre no debe exceder los 255 caracteres.',
+            //     'name.unique'   => 'El nombre ya existe. Por favor, elige otro.',
 
-                'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
-            ]
+            //     'estado.in' => 'El estado debe ser 1 (Inactivo) o 2 (Activo).',
+            // ]
         );
     }
 }
