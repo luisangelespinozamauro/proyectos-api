@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -62,6 +63,13 @@ class BrandsController extends Controller
         $validated = $this->validateBrand($request, $id);
 
         $brand->update($validated);
+
+        if (isset($validated['estado'])) {
+            Project::where('brand_id', $brand->id)
+                ->update([
+                    'estado' => $validated['estado']
+                ]);
+        }
 
         return response()->json([
             'message' => 'Marca actualizada correctamente',
