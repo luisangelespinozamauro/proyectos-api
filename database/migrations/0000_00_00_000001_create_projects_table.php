@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->string('mou_status')->nullable();
             $table->string('tca_status')->nullable();
             $table->string('contract_status')->nullable();
+            $table->string('contract_status2')->nullable();
             $table->string('bom_status')->nullable();
 
             //Ya no aparece en el excel

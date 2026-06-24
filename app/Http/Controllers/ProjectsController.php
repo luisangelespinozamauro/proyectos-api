@@ -33,6 +33,7 @@ class ProjectsController extends Controller
                 'mou_status',
                 'tca_status',
                 'contract_status',
+                'contract_status2',
                 'bom_status',
                 'price_agreement',
                 'project_status',
@@ -103,7 +104,7 @@ class ProjectsController extends Controller
                 }
             }
 
-            $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
+            $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'CONTRACT2', 'BOM', 'PRICE', 'LAYOUT'];
 
             if ($request->has('documents')) {
 
@@ -175,6 +176,7 @@ class ProjectsController extends Controller
                 'mou_status',
                 'tca_status',
                 'contract_status',
+                'contract_status2',
                 'bom_status',
                 'price_agreement',
                 'project_status',
@@ -249,7 +251,7 @@ class ProjectsController extends Controller
                 }
             }
 
-            $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'BOM', 'PRICE', 'LAYOUT'];
+            $allowedTypes = ['QUESTIONNAIRE', 'NDA', 'MOU', 'TCA', 'CONTRACT', 'CONTRACT2', 'BOM', 'PRICE', 'LAYOUT'];
 
             if ($request->has('documents')) {
 
@@ -338,6 +340,7 @@ class ProjectsController extends Controller
             'mou_status' => 'nullable',
             'tca_status' => 'nullable',
             'contract_status' => 'nullable',
+            'contract_status2' => 'nullable',
             'bom_status' => 'nullable',
             'price_agreement' => 'nullable',
             'project_status' => 'nullable',

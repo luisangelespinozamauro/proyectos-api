@@ -17,6 +17,7 @@ class Project extends Model
         'mou_status',
         'tca_status',
         'contract_status',
+        'contract_status2',
         'bom_status',
         'price_agreement',
         'project_status',
